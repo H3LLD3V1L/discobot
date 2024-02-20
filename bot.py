@@ -2,6 +2,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 import gspread
+import streamlit as st
+
+TOKEN = st.secrets["TOKEN"]
 
 gc = gspread.service_account(filename='/storage/emulated/0/serviceAuth.json')
 bot = commands.Bot(command_prefix="!", intents = discord.Intents.all())
@@ -57,4 +60,4 @@ async def say(interaction: discord.Interaction, task: str, user: str):
     val = progress[3:-3]
     await interaction.response.send_message(f"{user} has completed task till state {val}")
     
-bot.run("MTIwNjE3MTMyNTIyODUxNTQwOA.GwVW5B.wGjxAk9mHBn6SCnuo7RRCqith_FhGjOqMrTkpA")
+bot.run(TOKEN)
