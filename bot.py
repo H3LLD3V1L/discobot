@@ -6,7 +6,7 @@ import streamlit as st
 
 TOKEN = st.secrets["TOKEN"]
 
-gc = gspread.service_account(filename='/storage/emulated/0/serviceAuth.json')
+gc = gspread.service_account(filename='serviceAuth.json')
 bot = commands.Bot(command_prefix="!", intents = discord.Intents.all())
 
 list = ""
