@@ -1,3 +1,4 @@
 streamlit
 discord.py
 gspread
+google-generativeai
