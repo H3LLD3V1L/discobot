@@ -41,7 +41,7 @@ async def check():
   t = time.localtime()
   current_hour = time.strftime("%H", t)
   current_min = time.strftime("%M", t)
-  if (current_hour="12" and current_min>=30) or (current_hour="01" and current_min<=30):
+  if (current_hour=="12" and current_min>=30) or (current_hour=="01" and current_min<=30):
     channel = bot.get_channel(channel_id)
     if channel:
       array = ["B1", "B2", "B3", "B4", "B5", "B6" ,"B7"]
