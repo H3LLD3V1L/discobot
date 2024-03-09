@@ -41,7 +41,7 @@ async def check():
   t = time.localtime()
   current_hour = time.strftime("%H", t)
   current_min = time.strftime("%M", t)
-  if (current_hour=="12" and current_min>=30) or (current_hour=="01" and current_min<=30):
+  if (current_hour=="12" and current_min>=30) or (current_hour=="13" and current_min<=30):
     channel = bot.get_channel(channel_id)
     if channel:
       array = ["B1", "B2", "B3", "B4", "B5", "B6" ,"B7"]
@@ -86,15 +86,19 @@ async def say(interaction: discord.Interaction, option: str, name: str=None):
     await interaction.response.send_message(f"Name of tasks are : {list}")
   if option == "create":
     await interaction.response.defer()
-    wks = gc.create(name)
-    list = list + "\n" + name
-    taskarray.append(name)
-    file_path.unlink()
-    with open("variables.py", mode="w") as file:
-      file.write(f"""var = \"\"\"{list}\"\"\"""")
-      file.write(f"""\nvararray = {taskarray}""")
-      file.write(f"""\nans = {anskey}""")
-    await interaction.followup.send(f"{name} task has been created")
+    wks1 = gc.open(name)
+    if wks1:
+      await interaction.followup.send(f"{name} task has already been created")
+    else:
+      wks = gc.create(name)
+      list = list + "\n" + name
+      taskarray.append(name)
+      file_path.unlink()
+      with open("variables.py", mode="w") as file:
+        file.write(f"""var = \"\"\"{list}\"\"\"""")
+        file.write(f"""\nvararray = {taskarray}""")
+        file.write(f"""\nans = {anskey}""")
+      await interaction.followup.send(f"{name} task has been created")
 
 @bot.tree.command(name="update")
 @app_commands.describe(task="name of task")
@@ -158,13 +162,6 @@ async def say(interaction: discord.Interaction, task: str, user: str):
     progress = str(wks.get('B7'))
     val = progress[3:-3]
     await interaction.followup.send(f"{user} has completed task till state {val}")
-
-@bot.tree.command(name="test")
-@app_commands.describe(topic="Topic on which you want to create test")
-async def say(interaction: discord.Interaction, topic: str):
-  await interaction.response.defer()
-  response = model.generate_content(f"Generate MCQ test on topic {topic} according to class 12 beginners level")
-  await interaction.followup.send("Test is : " + response.text)
 
 @bot.tree.command(name="chat")
 @app_commands.describe(ques="Question which you want to ask")
